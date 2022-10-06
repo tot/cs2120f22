@@ -17,10 +17,10 @@ there is no such valid inference rule.
 #1A
 
 If a ball, b, is round *and* b is also red, is b red?
-P ∧ Q → Q
-A: yes/no: Yes
 
-B: Why? And-elimination
+A: yes/no: YES
+
+B: Why? and elimination
 
 
 #1B
@@ -28,12 +28,10 @@ B: Why? And-elimination
 If flowers make you happy and chocolates make you happy,
 and I give you flowers *or* I give you chocolates, will
 you be happy?
-A = Flowers make you happy, B = chocolates make you happy, C = give you flowers, D = give you chocolate
-A ∧ B, C ∨ D →  
 
 A: yes/no: Yes
 
-B: Why? Or introduction
+B: Why? Or elimination
 
 
 #1C: If giraffes are just zebras in disguise, then the 
@@ -41,54 +39,52 @@ moon is made of green cheese?
 
 A. yes/: Yes
 
-B. Why? False elimination, since the first proposition is false, then anything goes
+B. Why? False elimination
 
 
 #1D. If x = y implies that 0 = 1, then is it true that
 x ≠ y?
-(P → Q) ⊢ ¬ P
-A. yes/no: No
 
-B. Why? It is a contradiction to say that if P is true and it implies Q, then P is false. There is no rule to allow for the statement above.
+A. yes/no: Yes
+
+B. Why? not introduction, proof by negation
 
 
 
 #1E. If every zebra has stripes and Zoe is a Zebra then
 Zoe has stripes.
-P ∧ Q ⊢ Q
-P ∧ Q ⊢ P
-P is true, Q is true, so you can deduce P and Y is true
-A. yes/no: Yes
 
-B. Why? And introduction
+A. yes/no: yes
+
+B. Why? all elimination, universal specialization
 
 
 #1F. If Z could be *any* Zebra and Z has stripes, then 
 *every* Zebra has stripes.
-Z: zebra
-P → 
-A. Yes/no: No
 
-B: Why? There is no inference rule that allows a deduction of one to apply to every
+A. Yes/no: yes
+
+B: Why? all introduction
 
 
 #1G. If whenever the wind blows, the leaves move, and 
-the leaves are moving, then the wind is blowing.
-P → Q, Q ⊢ P
-A. yes/no: Yes
+the leaves are moving, so the wind is blowing.
 
-B. Why? Affirming the conclusion inference rule
+A. yes/no: no
+
+B. Why? not valid, someone could be shaking the tree
+(affirming the conclusion)
 
 
 #1H: If Gina is nice *or* Gina is tall, and Gina is nice,
 then Gina is not tall. (The "or" here is understood to be
 the or of predicate logic.)
-P ∨ Q, P → ¬Q
-A. yes/no: No
 
-B. Why? Affirming the disjunct
+A. yes/no: no
+
+B. Why? not valid, Gina could be tall and nice 
+(affirming the disjunct)
 -/
-
 
 
 /- 
@@ -96,14 +92,16 @@ B. Why? Affirming the disjunct
 
 Consider the following formula/proposition in propositional
 logic: X ∨ ¬Y.
-X = True, Y = True
-#2A: Is it satisfiable? If so, give a model (a binding of 
+
+#2A: Is is satisfiable? If so, give a model (a binding of 
 the variables to values that makes the expressions true).
-It is satisfiable. X=False, Y=False
+
+Yes. X = true and Y could be anything
+
 
 #2B: Is it valid? Explain your answer. 
-It is not valid because when X=False and Y=True, the result is False.
 
+no: X = false and Y = true is a counterexample
 -/
 
 
@@ -118,23 +116,22 @@ true if and only if Q is true) then if P is true then Q is
 true.
 -/
 
-#check ∀ (P Q: Prop), (P ↔ Q) → P → Q
-
-
+#check ∀ (P Q : Prop), P ↔ Q → (P → Q)
 
 
 /-
 #4 Translate the following expressions into English.
-The #check commands are just Lean commands and can
-be ignored here. 
+The #check command can of course be ignored here. 
 -/
 
 
 -- A
 #check ∀ (n m : ℕ), n < m → m - n > 0
 
+
 /-
-Answer: If there are any natural numbers n and m, then if n is less than m then m - n is greater than 0
+Answer: If n and m are any two natural numbers, then if 
+n is less than m then the difference, m - n, is positive
 -/
 
 -- B
@@ -142,7 +139,9 @@ Answer: If there are any natural numbers n and m, then if n is less than m then 
 #check ∃ (n : ℕ), ∀ (m : nat), m >= n
 
 /-
-Answer: Every n is a natural number that exists, and for all natural numbers n, m is greater than or equal to n
+Answer: There's some natural number n that is less
+than or equal to every other natural number. (And 
+this is also true, by the way. The number n = 0.)
 -/
 
 
@@ -152,7 +151,9 @@ variables (isEven: ℕ → Prop) (isOdd: ℕ → Prop)
 #check ∀ (n : ℕ), isEven n ∨ isOdd n
 
 /-
-Answer: For any arbitrary natural number n, it is true that n is either even or odd
+Answer: Every natural number is even or odd (or both).
+(Note however that we haven't really defined what these
+predicates mean here.)
 -/
 
 
@@ -161,7 +162,12 @@ Answer: For any arbitrary natural number n, it is true that n is either even or 
 #check ∀ (P : Prop), P ∨ ¬P
 
 /-
-Answer: for any proposition P, P is itself or it is not itself
+Answer: Every proposition is true or false. Note: this is
+actually not an axiom/rule in constructive logic, though it
+can be added as a rule without causing inconsistencies. By
+adding it, we convert constructive predicate logic into
+classical (albeit higher-order) predicate logic. We'll talk
+more about this later.
 -/
 
 
@@ -170,7 +176,7 @@ Answer: for any proposition P, P is itself or it is not itself
 #check ∀ (P : Prop), ¬(P ∧ ¬P)
 
 /-
-Answer: For any proposition P, P is never itself and not itself
+Answer: No proposition can be both true and false.
 -/
 
 
@@ -189,13 +195,14 @@ of the formal logic.
 -/
 
 variable contagion : 
-  ∀ (Animal : Type)  -- for any animal
-  (hasVirus : Animal → Prop)  -- proposiiton of hasVirus that takes Animal
-  (a1 a2 : Animal) -- a1 and a2 are animals
-  (hasVirus : Animal → Prop) -- proposition that takes Animal
-  (closeContact : Animal → Animal → Prop), -- proposition takes animal and returns? proposition
+  ∀ (Animal : Type) 
+  (hasVirus : Animal → Prop) 
+  (a1 a2 : Animal) 
+  (hasVirus : Animal → Prop)
+  (closeContact : Animal → Animal → Prop), 
   hasVirus a1 → closeContact a1 a2 → hasVirus a2
 
-If the animal a1 has the virus, 
-then it will be checked to see if it was in contact with another animal a2. 
-If the animal a1 was in close contact with a2, then the animal a2 will be checked for the virus.
+/-
+If any animal, a1, has a virus, and a1 comes in contact
+with an animal, a2, then a2 will have (catch) the virus.
+-/
