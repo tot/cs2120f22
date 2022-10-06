@@ -5,7 +5,6 @@ DUE: MON, OCT 3
 
 PURPOSE: The purpose of this homework is to help you understand
 the material covered up to now on first- and higher-order predicate
-logic. There are four questions. Each samples your understanding of
 multiple concepts. You might have to put different ideas from our
 work together to fully answer the questions. Give yourself time to
 think about this material. 
@@ -17,6 +16,7 @@ turn in.
 COLLABORATION: You may communicate with each other in general terms
 about the material we've covered but you are NOT to give or receive
 specific answers, or hints strong enough to essentially give away any 
+logic. There are four questions. Each samples your understanding of
 answers, on this homework. Please, do yourselves and your colleagues
 a favor and don't tell or take answers. This homework is a key check
 on, and preparation for, an upcoming midterm exam.  
@@ -52,8 +52,15 @@ See how the English presents the "story" of the formal proof in more
 natural, human, terms.
 
 ANSWER HERE:
--/
 
+Suppose Plato is an object of some type, Person, and that isMortal is a 
+one-place predicate that takes any Person p as an argument, and 
+that reduces to a proposition, denoted as isMortal p, that we understand
+as asserting that the particular Person p, is mortal.
+Then, we take everyoneIsMortal as a proof that all Persons are mortals.
+Finally, we can use this proof by applying it to a specific Person, Plato,
+to get a proof that Plato is mortal.
+-/
 
 /- #2: English to Logic 
 Formally model this natural-language "logic story" in Lean, using
@@ -69,33 +76,39 @@ is jealous of Mel.
 
 To do so, uncomment the following block of expressions then fill 
 in blanks to complete this task.
--/
 
-/- Uncomment this block to answer the question
+
+Uncomment this block to answer the question -/
+
 variable Person : Type
-variable Likes : _        -- a predicate with two Person arguments
-variable Jealous : _      -- same thing here  
+variable Likes : Person → Person → Prop       -- a predicate with two Person arguments
+variable Jealous : Person → Person → Prop      -- same thing here  
 variable Triangle :       -- note definition extends to next line
-  ∀ (p1 p2 p3 : Person), _  
-variables ed hannah mel : _
-variable likes_ed_hannah : _
-variable likes_hannah_mel : _
+  ∀ (p1 p2 p3 : Person), Likes p1 p2 ∧ Likes p2 p3 → Jealous p1 p3 
+variables ed hannah mel : Person
+variable likes_ed_hannah : Likes ed hannah
+variable likes_hannah_mel : Likes hannah mel
+
+/- 
 -- Finally write and use #check to check an expression that proves that ed is 
 -- jealous of mel.
 -- To ANSWER, fill in the _ with your expression. 
 -- HINT "Apply" what you know.
 -/
 
-#check _
+#check (Triangle ed hannah mel)
 
 
 /- #3: Proofing a propositions involving ∀ and ∨
 
-Write an English-language  proof of the following proposition, using
+Write an English-language proof of the following proposition, using
 the methods of inference we've covered: ∀ (P Q : Prop), P ∧ Q → Q ∨ P. 
 
 Do read that proposition carefully, please. You don't need to write a
 long proof. Keep it concise. Identiy the inference rules you use.
+
+Suppose P and Q are Propositions, and that if P is true and Q is true,
+then one of the Propositions Q or P are true. And-elimination and or-elimination
 
 -/
 
@@ -112,7 +125,11 @@ You may (and probably should) break up your expression over several
 lines, using line breaks and indentation to make the answer readable.
 -/
 
-variable Person : Type
+-- variable Person : Type
 variable Knows : Person → Person → Prop
 def answer : Prop := 
-    _
+    ∀ (P1 : Person),
+    ∃ (P2 P3 : Person),
+    Knows P1 P2 ->
+    Knows P2 P3 ->
+    Knows P3 P1
